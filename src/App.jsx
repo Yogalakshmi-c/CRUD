@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import {MdEdit } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
@@ -11,6 +11,7 @@ export default function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhoneNo] = useState("");
+ 
 
   const isEdit = editUser !== null;
 
@@ -19,27 +20,28 @@ export default function App() {
       .then((res) => res.json())
       .then((data) => setUsers(data.users));
   }, []);
+
   const addUser = async () => {
   if (!name.trim() || !email.trim() || !phone.trim()) {
     alert("Please fill all fields");
     return; 
   }
 
-  const addUser = async () => {
-    const res = await fetch("https://dummyjson.com/users/add", {
-      method: "POST",
-      headers: { "content-type": "application/json" },  
-      body: JSON.stringify({
-        firstName: name,
-        email,
-        phone,
-      }),
-    });
+  const res = await fetch("https://dummyjson.com/users/add", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      firstName: name,
+      email,
+      phone,
+    }),
+  });
 
-    const newUser = await res.json();
-    setUsers([...users, newUser]);
-    clearForm();
-  };
+  const newUser = await res.json();
+  setUsers([...users, newUser]);
+  clearForm();
+};
+
 
   const updateUser = async () => {
     const res = await fetch(`https://dummyjson.com/users/${editUser.id}`, {
@@ -101,15 +103,16 @@ export default function App() {
 
       {/* POPUP */}
       {userPopup && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl w-[90%] sm:w-[500px] md:w-[600px] lg:w-[650px]">
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl w-[90%] max-w-[400px] mx-auto">
+
             {/* TOP BAR */}
-            <div className="bg-sky-400 text-white px-6 py-3 flex rounded-t-lg items-center justify-between">
+            <div className="bg-sky-400 text-white px-6 py-3  flex rounded-t-lg items-center  justify-between">
               <h2 className="text-xl sm:text-2xl font-semibold">
                 {isEdit ? "Edit User" : "Add User"}
-              </h2>
+              </h2> 
 
-              <button
+              <button  
                 className="text-white text-2xl hover:cursor-pointer"
                  onClick={clearForm}
               >
@@ -119,43 +122,48 @@ export default function App() {
             </div>
 
             {/* FORM */}
-            <form className="p-6 space-y-4">
+            <form className="p-4 flex flex-col gap-2 items-center">
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your Name"
-                className="w-full border p-3 rounded mb-2"
-                required
-              />
+                className="w-full p-3 border border-gray-300 rounded-lg  shadow-sm focus:shadow-md focus:border-sky-500 focus:ring-2 focus:ring-sky-300 transition focus:outline-none"
+                 required
+/>
 
+              
+              
+         
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your Email"
-                className="w-full border p-3 rounded mb-2"
+                className="w-full p-3 border border-gray-300 rounded-lg  shadow-sm focus:shadow-md focus:border-sky-500 focus:ring-2 focus:ring-sky-300 transition focus:outline-none"
                 required
-              />
+/>
 
-              <input
+             
+
+              <input 
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhoneNo(e.target.value)}
                 placeholder="Enter your Phone Number"
-                className="w-full border p-3 rounded mb-2"
-                required
-              />
+                className="w-full p-3 border border-gray-300 rounded-lg  shadow-sm focus:shadow-md focus:border-sky-500 focus:ring-2 focus:ring-sky-300 transition focus:outline-none"
+               required
+/>
 
-              <div className="flex justify-center">
+
+              <div className="ms-auto">
                 <button
                 
                   onClick={(e)=>{
-                    e.preventDefault();
-                    isEdit ? updateUser : addUser
+                    e.preventDefault(); 
+                    isEdit ? updateUser() : addUser();
                   }}
-                  
-                  className="bg-sky-400 text-white px-5 py-2 rounded hover:bg-sky-500 hover:cursor-pointer"
+                  className="bg-sky-400 text-white px-5 py-2 rounded hover:bg-sky-500 hover:cursor-pointer "
                 >
                   {isEdit ? "Update User" : "Add User"}
                 </button>
@@ -196,8 +204,8 @@ export default function App() {
       )}
 
       {/* TABLE AREA */}
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[700px] border border-gray-500 shadow-blue-100 shadow-lg">
+      <div className=" max-h-auto overflow-x-auto sm-overflow-y-hidden">
+        <table className="w-full min-w-[700px] border border-gray-500 text-left  shadow-blue-100 shadow-lg border-collapse ">
           <thead>
             <tr className="bg-sky-400 text-white">
               <th className="border p-3">S.No</th>
@@ -219,12 +227,12 @@ export default function App() {
                 <td className="border p-3">{index + 1}</td>
                 <td className="border p-3">{u.firstName}</td>
                 <td className="border p-3">{u.email}</td>
-                <td className="border p-3">{u.phone}</td>
+                <td className="border p-3 whitespace-nowrap">{u.phone}</td>
 
                 <td className="border-b p-3  flex justify-center gap-3">
                   <button
                     onClick={() => startEdit(u)}
-                    className="bg-blue-400 text-white px-2 py-1 size-8 rounded-full hover:cursor-pointer"
+                    className="bg-blue-400 text-white px-2 py-1 size-8 rounded-full hover:cursor-pointer hover:bg-blue-500 duration-300"
                   >
                     <MdEdit />
                   </button>
@@ -243,5 +251,5 @@ export default function App() {
       </div>
     </div>
   );
-}
+
 }
