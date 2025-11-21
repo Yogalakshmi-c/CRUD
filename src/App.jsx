@@ -231,7 +231,7 @@ export default function App() {
 
                   <button
                     onClick={() => setConfirmDelete(u.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded-full hover:cursor-pointer"
+                    className="bg-red-500 text-white px-2 py-1 rounded-full hover:cursor-pointer "
                   >
                     <RxCross2 />
                   </button>
